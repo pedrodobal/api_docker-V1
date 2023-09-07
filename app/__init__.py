@@ -7,6 +7,7 @@ from app.domain.transaction.transaction_controller import api as transaction
 
 def create_app(db_params):
     app = Flask(__name__)
+    app.config['WTF_CSRF_ENABLED'] = True
     app.config['DB_PARAMS'] = db_params
     app.wsgi_app = ProxyFix(app.wsgi_app)
     blueprint = Blueprint('api', __name__)

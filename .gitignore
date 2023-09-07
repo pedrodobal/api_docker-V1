@@ -1,0 +1,10 @@
+# Ignorar arquivos gerados pelo Python
+__pycache__/
+
+# Ignorar o arquivo run.py
+run.py
+
+# Ignorar os arquivos de teste específicos
+account_controller_test.py
+run_unit_test.py
+transaction_controller_test.py

@@ -3,12 +3,12 @@ from app.domain.transaction.transaction import Transaction
 
 class TransactionDb:
     @classmethod
-    def __init__(self, db_params):
-        self.db_params = db_params
+    def __init__(cls, db_params):
+        cls.db_params = db_params
 
     @classmethod
-    def create_transaction(self, transaction: Transaction):
-        conn = psycopg2.connect(**self.db_params)
+    def create_transaction(cls, transaction: Transaction):
+        conn = psycopg2.connect(**cls.db_params)
         cur = conn.cursor()
 
         query = "INSERT INTO accountapi.transactions (transaction_id, account_id, merchant, amount, state, transaction_time) " \
@@ -21,8 +21,8 @@ class TransactionDb:
         conn.close()
 
     @classmethod
-    def get_transactions(self):
-        conn = psycopg2.connect(**self.db_params)
+    def get_transactions(cls):
+        conn = psycopg2.connect(**cls.db_params)
         cur = conn.cursor()
 
         query = "SELECT * FROM accountapi.transactions;"
@@ -43,8 +43,8 @@ class TransactionDb:
         return response
 
     @classmethod
-    def get_transaction(self, id):
-        conn = psycopg2.connect(**self.db_params)
+    def get_transaction(cls, id):
+        conn = psycopg2.connect(**cls.db_params)
         cur = conn.cursor()
 
         query = "SELECT * FROM accountapi.transactions WHERE transaction_id = %s;"
@@ -70,8 +70,8 @@ class TransactionDb:
             return error_response
         
     @classmethod
-    def get_transactions_by_account_id(self, id):
-        conn = psycopg2.connect(**self.db_params)
+    def get_transactions_by_account_id(cls, id):
+        conn = psycopg2.connect(**cls.db_params)
         cur = conn.cursor()
 
         query = "SELECT * FROM accountapi.transactions WHERE account_id = %s;"

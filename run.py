@@ -5,8 +5,8 @@ if __name__ == '__main__':
     db_params = {
             "dbname": "infnet",
             "user": "postgres",
-            "password": "",
-            "host": "",
+            "password": "aquelasenha",
+            "host": "192.168.1.107",
             "port": "5432"
         }
     SERVER_HOST = environ.get('SERVER_HOST', 'localhost')
