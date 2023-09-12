@@ -1,14 +1,20 @@
-FROM python:3.9-slim-buster
+FROM python:3.9-slim-buster as BUILD-STAGE
 
-ENV PYTHONUNBUFFERED 1
+ENV HOME=/app/credit-api
+WORKDIR $HOME
 
-WORKDIR /python-docker
+RUN useradd -m python
 
-COPY requirements.txt requirements.txt
+COPY requirements.txt $HOME
 RUN pip3 install -r requirements.txt
 
-COPY . .
+COPY . $HOME
+
+RUN chown -R python:python $HOME
+
+USER python
+
+EXPOSE 5500
 
 CMD ["gunicorn", "--bind", "0.0.0.0:5500", "--workers", "8", "app:create_app({\"dbname\": \"infnet\", \"user\": \"postgres\", \"password\": \"aquelasenha\", \"host\": \"192.168.1.107\", \"port\": \"5432\"})"]
 
-EXPOSE 5500
