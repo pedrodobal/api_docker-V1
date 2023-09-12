@@ -5,10 +5,11 @@ WORKDIR $HOME
 
 RUN useradd -m python
 
-COPY requirements.txt $HOME
-RUN pip3 install -r requirements.txt
+COPY requirements.txt $HOME/
+COPY app $HOME/app
+COPY run.py $HOME/
 
-COPY . $HOME
+RUN pip3 install -r requirements.txt
 
 RUN chown -R python:python $HOME
 
