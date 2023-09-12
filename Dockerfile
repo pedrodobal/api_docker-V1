@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster as BUILD-STAGE
+FROM python:3.9-slim-buster AS BUILD-STAGE
 
 ENV HOME=/app/credit-api
 WORKDIR $HOME

@@ -10,7 +10,7 @@ TRANSACTION_INTERVAL = 120
 
 api = Namespace('Transaction', description='Transaction Manager')
 model = api.model('TransactionModel', {
-    'accountId': fields.String,
+    'account_id': fields.String,
     'merchant': fields.String,
     'amount': fields.Float
 })
@@ -29,28 +29,28 @@ class TransactionController(Resource):
         return response, 200 
     
     @api.expect(model)
-    @api.param('accountId','account id',)
+    @api.param('account_id','account id',)
     @api.param('merchant','merchant name')
     @api.param('amount','value amount')
     def post(self):
         data = request.get_json()
         
-        required_fields = ['accountId', 'merchant', 'amount']
+        required_fields = ['account_id', 'merchant', 'amount']
         if not all(field in data for field in required_fields):
             response = {
                 "message": 'bad request'
             }
             return response, 400
 
-        account_id = data["accountId"]
+        account_id = data["account_id"]
         account = self.account_db.get_account(account_id)
         
         if account:
             merchant = Merchant(data["merchant"])
-            account = Account(account['activecard'], account['availablelimit'], account_id)
-            transaction = Transaction(merchant.merchantName, data["amount"], "Processing", account.accountId)
+            account = Account(account['active_card'], account['available_limit'], account_id)
+            transaction = Transaction(merchant.merchantName, data["amount"], "Processing", account.account_id)
             
-            if not account.isCardActive():
+            if not account.is_card_active():
                 response = {
                     "message": 'Card not active'
                 }
@@ -58,7 +58,7 @@ class TransactionController(Resource):
                 self.transaction_db.create_transaction(transaction)
                 return response, 403
             
-            if not account.checkLimit(transaction.amount):
+            if not account.check_limit(transaction.amount):
                 response = {
                     "message": 'Insufficient limit'
                 }
@@ -66,8 +66,8 @@ class TransactionController(Resource):
                 self.transaction_db.create_transaction(transaction)
                 return response, 400
             
-            account_transactions = account.getTransactions()
-            interval_start = transaction.transactionTime - TRANSACTION_INTERVAL
+            account_transactions = account.get_transactions()
+            interval_start = transaction.transaction_time - TRANSACTION_INTERVAL
 
             account_recent_transactions = [
                 account_transaction
@@ -83,7 +83,7 @@ class TransactionController(Resource):
                 self.transaction_db.create_transaction(transaction)
                 return response, 400
             
-            duplicate_transactions = [t for t in account_recent_transactions if t['amount'] == transaction.amount and t['merchant'] == merchant.merchantName]
+            duplicate_transactions = [t for t in account_recent_transactions if t['amount'] == transaction.amount and t['merchant'] == merchant.merchant_name]
             
             if len(duplicate_transactions) >= 1:
                 response = {
@@ -93,9 +93,9 @@ class TransactionController(Resource):
                 self.transaction_db.create_transaction(transaction)
                 return response, 400
             
-            new_limit = account.availableLimit - transaction.amount
-            account.updateLimit(new_limit)
-            self.account_db.change_account(account.accountId, account.__dict__)
+            new_limit = account.available_limit - transaction.amount
+            account.update_limit(new_limit)
+            self.account_db.change_account(account.account_id, account.__dict__)
             
             response = {
                     "message": 'success',

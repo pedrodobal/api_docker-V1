@@ -4,8 +4,8 @@ from app.domain.account.account_db import AccountDb
 
 api = Namespace('Account', description='Account Manager')
 model = api.model('AccountModel', {
-    'activeCard': fields.Boolean,
-    'availableLimit': fields.Integer
+    'active_card': fields.Boolean,
+    'available_limit': fields.Integer
 })
 @api.route('/')
 class AccountController(Resource):
@@ -20,19 +20,19 @@ class AccountController(Resource):
         return response, 200
     
     @api.expect(model)
-    @api.param('activeCard','if the card is active',)
-    @api.param('availableLimit','available limit')
+    @api.param('active_card','if the card is active',)
+    @api.param('available_limit','available limit')
     def post(self):
         data = request.get_json()
         if data:
-            if 'activeCard' not in data or 'availableLimit' not in data:
+            if 'active_card' not in data or 'available_limit' not in data:
                 error_response = {
                     "errorCode": 'ToDo',
                     "message": 'Bad Request - Missing required fields'
                 }
                 return error_response, 400
             else:
-                account = self.account_db.create_account(data["activeCard"], data["availableLimit"])
+                account = self.account_db.create_account(data["active_card"], data["available_limit"])
                 response = {
                     "account": account.__dict__
                 }
@@ -68,7 +68,7 @@ class AccountIdController(Resource):
     @api.expect(model)
     def put(self, id):
         data = request.json
-        if not any(item in data for item in ['activeCard', 'availableLimit']):
+        if not any(item in data for item in ['active_card', 'available_limit']):
             error_response = {
                 "errorCode": 'ToDo', 
                 "message": 'Bad Request - Missing required fields'

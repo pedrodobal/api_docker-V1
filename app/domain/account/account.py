@@ -5,23 +5,23 @@ class Account:
 
     def __init__(self, active_card, available_limit, account_id = None):
         if not account_id:
-            self.accountId = str(uuid.uuid4())
+            self.account_id = str(uuid.uuid4())
         else:
-            self.accountId = account_id
-        self.activeCard = active_card
-        self.availableLimit = available_limit
+            self.account_id = account_id
+        self.active_card = active_card
+        self.available_limit = available_limit
 
-    def changeCardStatus(self):
-        self.activeCard = not self.activeCard
+    def change_card_status(self):
+        self.active_card = not self.active_card
 
-    def isCardActive(self):
-        return self.activeCard
+    def is_card_active(self):
+        return self.active_card
 
-    def getTransactions(self):
-        return TransactionDb.get_transactions_by_account_id(self.accountId)
+    def get_transactions(self):
+        return TransactionDb.get_transactions_by_account_id(self.account_id)
     
-    def checkLimit(self, value):
-        return value <= self.availableLimit
+    def check_limit(self, value):
+        return value <= self.available_limit
     
-    def updateLimit(self, value):
-        self.availableLimit = value
+    def update_limit(self, value):
+        self.available_limit = value
