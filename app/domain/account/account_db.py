@@ -11,7 +11,7 @@ class AccountRepository:
 
         account = Account(active_card, available_limit)
         query = "INSERT INTO accountapi.accounts (accountid, activecard, availablelimit) VALUES (%s, %s, %s);"
-        cur.execute(query, (account.accountId, active_card, available_limit))
+        cur.execute(query, (account.account_id, active_card, available_limit))
 
         conn.commit()
         cur.close()
@@ -30,7 +30,7 @@ class AccountRepository:
         cur.close()
         conn.close()
 
-        response = [{'accountid': item[0], 'activecard': item[1], 'availablelimit': item[2]} for item in accounts]
+        response = [{'account_id': item[0], 'active_card': item[1], 'available_limit': item[2]} for item in accounts]
         
         return response
 
@@ -46,7 +46,7 @@ class AccountRepository:
         conn.close()
         
         if account:
-            response = {'accountid': account[0], 'activecard': account[1], 'availablelimit': account[2]}
+            response = {'account_id': account[0], 'active_card': account[1], 'available_limit': account[2]}
             return response
 
     def remove_account(self, id):
@@ -70,13 +70,13 @@ class AccountRepository:
 
         account = self.get_account(id)
         if account:
-            if data.get('activeCard') is not None:
-                account_change_card_status = data.get('activeCard')
+            if data.get('active_card') is not None:
+                account_change_card_status = data.get('active_card')
                 query = "UPDATE accountapi.accounts SET activecard = %s WHERE accountid = %s;"
                 cur.execute(query, (account_change_card_status, id))
 
-            if data.get('availableLimit') is not None:
-                account_update_limit = data.get('availableLimit')
+            if data.get('available_limit') is not None:
+                account_update_limit = data.get('available_limit')
                 query = "UPDATE accountapi.accounts SET availablelimit = %s WHERE accountid = %s;"
                 cur.execute(query, (account_update_limit, id))
 

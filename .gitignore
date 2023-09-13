@@ -5,9 +5,9 @@ __pycache__/
 run.py
 
 # Ignorar os arquivos de teste específicos
-account_controller_test.py
-run_unit_test.py
-transaction_controller_test.py
+# account_controller_test.py
+# run_unit_test.py
+# transaction_controller_test.py
 
 # Ignorar o arquivo de variáveis de ambiente
 .env.*

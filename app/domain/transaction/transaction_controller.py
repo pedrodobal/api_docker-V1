@@ -48,7 +48,7 @@ class TransactionController(Resource):
         if account:
             merchant = Merchant(data["merchant"])
             account = Account(account['active_card'], account['available_limit'], account_id)
-            transaction = Transaction(merchant.merchantName, data["amount"], "Processing", account.account_id)
+            transaction = Transaction(merchant.merchant_name, data["amount"], "Processing", account.account_id)
             
             if not account.is_card_active():
                 response = {

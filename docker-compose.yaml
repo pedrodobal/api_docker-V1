@@ -28,5 +28,18 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./db-init-scripts:/docker-entrypoint-initdb.d
 
+  db_test:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=${TEST_DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata_test:/var/lib/postgresql/data
+      - ./db-init-scripts:/docker-entrypoint-initdb.d
+
 volumes:
   pgdata:
+  pgdata_test:

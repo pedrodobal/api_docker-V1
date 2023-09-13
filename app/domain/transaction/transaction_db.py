@@ -13,8 +13,8 @@ class TransactionDb:
 
         query = "INSERT INTO accountapi.transactions (transaction_id, account_id, merchant, amount, state, transaction_time) " \
                 "VALUES (%s, %s, %s, %s, %s, %s);"
-        cur.execute(query, (transaction.transactionId, transaction.accountId, transaction.merchant,
-                            transaction.amount, transaction.state, transaction.transactionTime))
+        cur.execute(query, (transaction.transaction_id, transaction.account_id, transaction.merchant,
+                            transaction.amount, transaction.state, transaction.transaction_time))
 
         conn.commit()
         cur.close()
