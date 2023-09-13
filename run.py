@@ -1,14 +1,20 @@
 import app
 from os import environ
 
-if __name__ == '__main__':
-    db_params = {
-            "dbname": "infnet",
-            "user": "postgres",
-            "password": "aquelasenha",
-            "host": "192.168.1.107",
-            "port": "5432"
-        }
+def main():
     SERVER_HOST = environ.get('SERVER_HOST', 'localhost')
-    api_app = app.create_app(db_params)
-    api_app.run(host=SERVER_HOST, port=5500, debug=(not environ.get('ENV') == 'PRODUCTION'), threaded=True)
+    application = create_application()
+    application.run(host=SERVER_HOST, port=5500, debug=(not environ.get('ENV') == 'PRODUCTION'), threaded=True)
+
+def create_application():
+    db_params = {
+        "dbname": environ.get('DB_NAME', 'default_dbname'),
+        "user": environ.get('DB_USER', 'default_user'),
+        "password": environ.get('DB_PASSWORD', 'default_password'),
+        "host": environ.get('DB_HOST', 'default_host'),
+        "port": environ.get('DB_PORT', 'default_port')
+    }
+    return app.create_app(db_params)
+
+if __name__ == '__main__':
+    main()

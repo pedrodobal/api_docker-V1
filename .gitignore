@@ -8,3 +8,8 @@ run.py
 account_controller_test.py
 run_unit_test.py
 transaction_controller_test.py
+
+# Ignorar o arquivo de variáveis de ambiente
+.env.*
+```
+
